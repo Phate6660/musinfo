@@ -30,7 +30,6 @@ fn info(c: &mut Client) -> (String, String, String, String, String) {
     let alb = song.tags.get("Album").unwrap();
     let dat = song.tags.get("Date").unwrap();
     let gen = song.tags.get("Genre").unwrap();
-
     (
         tit.to_string(),
         art.to_string(),
