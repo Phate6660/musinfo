@@ -56,7 +56,7 @@ fn main() {
     let (elapsed, duration) = time(&mut status);
     let stat = status.state;
     let state = PlayState { sta: stat };
-    // time
+    // elapsed/duration
     // title [state]
     // album (date)
     // artist
