@@ -14,5 +14,5 @@ artist
 genre
 ```
 
-Example:
+Example:<br>
 ![example](images/example.png)
