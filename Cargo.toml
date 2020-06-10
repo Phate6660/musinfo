@@ -7,6 +7,7 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-time = "0.2.16"
 mpd = "0.0.12"
 notify-rust = "4.0.0"
+sedregex = "0.2.4"
+time = "0.2.16"

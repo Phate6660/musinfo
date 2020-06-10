@@ -8,7 +8,7 @@ Note: Cover art is expected to be placed at `/tmp/cover.png`.
 
 ```
 elapsed/duration [state]
-title [bitrate]
+title [format & bitrate kbps]
 album [date]
 artist
 genre

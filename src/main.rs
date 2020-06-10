@@ -1,5 +1,6 @@
 use mpd::{Client, Song, State, Status};
 use notify_rust::{Notification, Timeout};
+use sedregex::find_and_replace;
 use std::fmt;
 
 // Struct and impl for printing the fucking state as a fucking string
@@ -23,14 +24,17 @@ fn format_time(time: i64) -> String {
 }
 
 // title/artist/album/date/genre -> strings
-fn info(c: &mut Client) -> (String, String, String, String, String) {
+fn info(c: &mut Client) -> (String, String, String, String, String, String) {
     let song: Song = c.currentsong().unwrap().unwrap();
+    let fil = song.file;
+    let format = find_and_replace(&fil, &["s/.*\\.//"]).unwrap();
     let tit = song.title.as_ref().unwrap();
     let art = song.tags.get("Artist").unwrap();
     let alb = song.tags.get("Album").unwrap();
     let dat = song.tags.get("Date").unwrap();
     let gen = song.tags.get("Genre").unwrap();
     (
+        format.to_string(),
         tit.to_string(),
         art.to_string(),
         alb.to_string(),
@@ -53,17 +57,18 @@ fn info_extended(status: &mut Status) -> (String, String, String) {
 fn main() {
     let mut c = Client::connect("127.0.0.1:6600").unwrap();
     let mut status: Status = c.status().unwrap();
-    let (tit, art, alb, dat, gen) = info(&mut c);
+    let (format, tit, art, alb, dat, gen) = info(&mut c);
     let (elapsed, duration, bitrate) = info_extended(&mut status);
     let stat = status.state;
     let state = PlayState { sta: stat };
+    let info = format + &" @ " + &bitrate;
     // elapsed/duration [state]
-    // title [bitrate]
+    // title [format @ bitrate kbps]
     // album [date]
     // artist
     // genre
-    //
-    // ^^ Output of `msg` (without the extra space at the bottom)
+    // file
+    // ^^ Output of `msg`
     let msg = elapsed
         + &"/".to_string()
         + &duration
@@ -72,7 +77,7 @@ fn main() {
         + &"]\n".to_string()
         + &tit
         + &" [".to_string()
-        + &bitrate
+        + &info
         + &"]\n".to_string()
         + &alb
         + &" [".to_string()
