@@ -7,9 +7,9 @@ Note: Cover art is expected to be placed at `/tmp/cover.png`.
 ## Output
 
 ```
-elapsed/duration
-title [state]
-album (date)
+elapsed/duration [state]
+title [bitrate]
+album [date]
 artist
 genre
 ```

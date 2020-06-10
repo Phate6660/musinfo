@@ -40,24 +40,26 @@ fn info(c: &mut Client) -> (String, String, String, String, String) {
     )
 }
 
-// elapsed/duration -> string
-fn time(status: &mut Status) -> (String, String) {
+// elapsed/duration and bitrate -> string
+fn info_extended(status: &mut Status) -> (String, String, String) {
     let elap = status.elapsed.unwrap().num_seconds();
     let elapsed = format_time(elap);
     let dur = status.duration.unwrap().num_seconds();
     let duration = format_time(dur);
-    (elapsed, duration)
+    let bitrate = status.bitrate.unwrap().to_string();
+    let bitrate = bitrate + &" kbps".to_string();
+    (elapsed, duration, bitrate)
 }
 
 fn main() {
     let mut c = Client::connect("127.0.0.1:6600").unwrap();
     let mut status: Status = c.status().unwrap();
     let (tit, art, alb, dat, gen) = info(&mut c);
-    let (elapsed, duration) = time(&mut status);
+    let (elapsed, duration, bitrate) = info_extended(&mut status);
     let stat = status.state;
     let state = PlayState { sta: stat };
-    // elapsed/duration
-    // title [state]
+    // elapsed/duration [state]
+    // title [bitrate]
     // album (date)
     // artist
     // genre
@@ -66,15 +68,17 @@ fn main() {
     let msg = elapsed
         + &"/".to_string()
         + &duration
-        + &"\n".to_string()
-        + &tit
         + &" [".to_string()
         + &state.to_string()
         + &"]\n".to_string()
+        + &tit
+        + &" [".to_string()
+        + &bitrate
+        + &"]\n".to_string()
         + &alb
-        + &" (".to_string()
+        + &" [".to_string()
         + &dat
-        + &")\n".to_string()
+        + &"]\n".to_string()
         + &art
         + &"\n".to_string()
         + &gen;
