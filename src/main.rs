@@ -67,7 +67,6 @@ fn main() {
     // album [date]
     // artist
     // genre
-    // file
     // ^^ Output of `msg`
     let msg = elapsed
         + &"/".to_string()
