@@ -60,7 +60,7 @@ fn main() {
     let state = PlayState { sta: stat };
     // elapsed/duration [state]
     // title [bitrate]
-    // album (date)
+    // album [date]
     // artist
     // genre
     //
