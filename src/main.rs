@@ -28,11 +28,12 @@ fn info(c: &mut Client) -> (String, String, String, String, String, String) {
     let song: Song = c.currentsong().unwrap().unwrap();
     let fil = song.file;
     let format = find_and_replace(&fil, &["s/.*\\.//"]).unwrap();
+    let na = "N/A".to_string();
     let tit = song.title.as_ref().unwrap();
-    let art = song.tags.get("Artist").unwrap();
-    let alb = song.tags.get("Album").unwrap();
-    let dat = song.tags.get("Date").unwrap();
-    let gen = song.tags.get("Genre").unwrap();
+    let art = song.tags.get("Artist").unwrap_or(&na);
+    let alb = song.tags.get("Album").unwrap_or(&na);
+    let dat = song.tags.get("Date").unwrap_or(&na);
+    let gen = song.tags.get("Genre").unwrap_or(&na);
     (
         format.to_string(),
         tit.to_string(),
