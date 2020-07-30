@@ -54,7 +54,7 @@ fn main() {
     let (format, tit, art, alb, dat, gen) = info(&mut c);
     let (elapsed, duration, bitrate) = info_extended(&mut status);
     let stat = status.state;
-    let state = PlayState { sta: stat };
+    let state = PlayState { sta: stat }.to_string();
     let info = [format, " @ ".to_string(), bitrate].concat();
     // elapsed/duration [state]
     // title [format @ bitrate kbps]
@@ -62,10 +62,25 @@ fn main() {
     // artist
     // genre
     // ^^ Output of `msg`
-    let msg = [elapsed, "/".to_string(), duration, " [".to_string(),
-        state.to_string(), "]\n".to_string(), tit, " [".to_string(),
-        info, "]\n".to_string(), alb, " [".to_string(), dat,
-        "]\n".to_string(), art, "\n".to_string(), gen].concat();
+    let msg = [
+        elapsed,
+        "/".to_string(),
+        duration,
+        " [".to_string(),
+        state,
+        "]\n".to_string(),
+        tit,
+        " [".to_string(),
+        info,
+        "]\n".to_string(),
+        alb,
+        " [".to_string(),
+        dat,
+        "]\n".to_string(),
+        art,
+        "\n".to_string(),
+        gen,
+    ].concat();
     Notification::new()
         .summary(&msg)
         .icon("/tmp/cover.png") // Cover art should be wrote to `/tmp/cover.png`
