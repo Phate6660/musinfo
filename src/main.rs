@@ -3,7 +3,7 @@ use notify_rust::{Notification, Timeout};
 use sedregex::find_and_replace;
 use std::fmt;
 
-// Struct and impl for printing the fucking state as a fucking string
+// Struct and impl for printing the state as a string
 struct PlayState {
     sta: State,
 }
@@ -23,7 +23,7 @@ fn format_time(time: i64) -> String {
     format!("{:0>2}:{:0>2}", minutes, seconds)
 }
 
-// title/artist/album/date/genre -> strings
+// format/title/artist/album/date/genre -> Strings
 fn info(c: &mut Client) -> (String, String, String, String, String, String) {
     let song: Song = c.currentsong().unwrap().unwrap();
     let fil = song.file;
@@ -43,14 +43,14 @@ fn info(c: &mut Client) -> (String, String, String, String, String, String) {
     )
 }
 
-// elapsed/duration and bitrate -> string
+// elapsed/duration and bitrate -> Strings
 fn info_extended(status: &mut Status) -> (String, String, String) {
     let elap = status.elapsed.unwrap().num_seconds();
     let elapsed = format_time(elap);
     let dur = status.duration.unwrap().num_seconds();
     let duration = format_time(dur);
     let bitrate = status.bitrate.unwrap().to_string();
-    let bitrate = bitrate + &" kbps".to_string();
+    let bitrate = [bitrate, " kbps".to_string()].concat();
     (elapsed, duration, bitrate)
 }
 
@@ -61,30 +61,17 @@ fn main() {
     let (elapsed, duration, bitrate) = info_extended(&mut status);
     let stat = status.state;
     let state = PlayState { sta: stat };
-    let info = format + &" @ " + &bitrate;
+    let info = [format, " @ ".to_string(), bitrate].concat();
     // elapsed/duration [state]
     // title [format @ bitrate kbps]
     // album [date]
     // artist
     // genre
     // ^^ Output of `msg`
-    let msg = elapsed
-        + &"/".to_string()
-        + &duration
-        + &" [".to_string()
-        + &state.to_string()
-        + &"]\n".to_string()
-        + &tit
-        + &" [".to_string()
-        + &info
-        + &"]\n".to_string()
-        + &alb
-        + &" [".to_string()
-        + &dat
-        + &"]\n".to_string()
-        + &art
-        + &"\n".to_string()
-        + &gen;
+    let msg = [elapsed, "/".to_string(), duration, " [".to_string(),
+        state.to_string(), "]\n".to_string(), tit, " [".to_string(),
+        info, "]\n".to_string(), alb, " [".to_string(), dat,
+        "]\n".to_string(), art, "\n".to_string(), gen].concat();
     Notification::new()
         .summary(&msg)
         .icon("/tmp/cover.png") // Cover art should be wrote to `/tmp/cover.png`
