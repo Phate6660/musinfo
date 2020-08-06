@@ -14,13 +14,11 @@ impl fmt::Display for PlayState {
     }
 }
 
-// Borrowed from JakeStanger, I don't usually do this, but I thought I was going to go insane
-// If you come across this and you're mad, I sincerely apologize and will remove/replace this
 fn format_time(time: i64) -> String {
-    let seconds = (time as f64 % 60.0).round();
-    let minutes = ((time as f64 % 3600.0) / 60.0).round();
+    let minutes = (time / 60) % 60;
+    let seconds = time % 60;
 
-    format!("{:0>2}:{:0>2}", minutes, seconds)
+    format!("{}:{}", minutes, seconds)
 }
 
 // format/title/artist/album/date/genre -> Strings
