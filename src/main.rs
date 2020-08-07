@@ -18,7 +18,7 @@ fn format_time(time: i64) -> String {
     let minutes = (time / 60) % 60;
     let seconds = time % 60;
 
-    format!("{}:{}", minutes, seconds)
+    format!("{:0>2}:{:0>2}", minutes, seconds)
 }
 
 // format/title/artist/album/date/genre -> Strings
