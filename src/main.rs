@@ -81,7 +81,7 @@ fn main() {
     ].concat();
     Notification::new()
         .summary(&msg)
-        .icon("/tmp/cover.png") // Cover art should be wrote to `/tmp/cover.png`
+        .icon("/tmp/cover.png") // Cover art should be written to `/tmp/cover.png`
         .timeout(Timeout::Milliseconds(6000)) // Notification closes in 6s
         .show()
         .unwrap();
